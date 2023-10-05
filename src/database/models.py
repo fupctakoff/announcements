@@ -1,4 +1,3 @@
-import asyncio
 from sqlalchemy import Column, ForeignKey, Integer, String, JSON
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
@@ -22,7 +21,7 @@ class Role(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String)
     permission = Column(JSON)
-    users = relationship('User', backref='role', cascade='all, delete')
+    users = relationship('User', cascade='all, delete')
 
 
 class User(Base):
@@ -32,13 +31,16 @@ class User(Base):
     name = Column(String)
     password = Column(String)
     role_id = Column(Integer, ForeignKey('roles.id'))
+    role = relationship('Role')
+    announcemets = relationship('Announcement', cascade='all, delete')
+    comments = relationship('Comment')
 
 
 class AnnouncementType(Base):
     __tablename__ = 'announcement_types'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String)
-    announcements = relationship('Announcements', backref='type')
+    announcements = relationship('Announcement', cascade='all, delete')
 
 
 class Announcement(Base):
@@ -47,6 +49,20 @@ class Announcement(Base):
     title = Column(String)
     content = Column(String)
     type_id = Column(Integer, ForeignKey('announcement_types.id'))
+    type = relationship('AnnouncementType')
+    owner_id = Column(Integer, ForeignKey('users.id'))
+    owner = relationship('User')
+    comments = relationship('Comment', cascade='all, delete')
+
+
+class Comment(Base):
+    __tablename__ = 'comments'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    text = Column(String)
+    owner_id = Column(Integer, ForeignKey('users.id'), nullable=True)
+    owner = relationship('User')
+    announcement_id = Column(Integer, ForeignKey('announcements.id'))
+    announcement = relationship('Announcement')
 
 
 # async def get_session():
