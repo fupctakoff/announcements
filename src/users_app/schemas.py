@@ -1,23 +1,17 @@
-from fastapi_users import schemas
+from fastapi_users.schemas import BaseUser, BaseUserUpdate, CreateUpdateDictModel
+from pydantic import BaseModel, EmailStr
 
 
-class UserRead(schemas.BaseUser[int]):
+class UserRead(BaseUser[int]):
     name: str
-    role: str
-    announcemets: int
-    comments: int
+    role_id: int
 
 
-class UserCreate(schemas.BaseUserCreate):
+class UserCreate(CreateUpdateDictModel):
     name: str
-    role: str
-    announcemets: int
-    comments: int
+    email: EmailStr
+    password: str
 
 
-class UserUpdate(schemas.BaseUserUpdate):
+class UserUpdate(BaseUserUpdate):
     name: str
-    role: str
-    announcemets: int
-    comments: int
-

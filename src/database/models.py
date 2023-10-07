@@ -20,7 +20,7 @@ class Role(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String)
     permission = Column(JSON)
-    users = relationship('User', cascade='all, delete')
+    users = relationship('User', back_populates='role', cascade='all, delete')
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):
@@ -30,9 +30,9 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     name = Column(String)
     hashed_password = Column(String, nullable=False)
     role_id = Column(Integer, ForeignKey('role.id'))
-    role = relationship('Role')
-    announcemets = relationship('Announcement', cascade='all, delete')
-    comments = relationship('Comment')
+    role = relationship('Role', back_populates='users')
+    announcements = relationship('Announcement', back_populates='owner', cascade='all, delete')
+    comments = relationship('Comment', back_populates='owner')
     is_active = Column(Boolean, default=True, nullable=False)
     is_superuser = Column(Boolean, default=False, nullable=False)
     is_verified = Column(Boolean, default=False, nullable=False)
@@ -42,7 +42,7 @@ class AnnouncementType(Base):
     __tablename__ = 'announcementtype'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String)
-    announcements = relationship('Announcement', cascade='all, delete')
+    announcements = relationship('Announcement', back_populates='type', cascade='all, delete')
 
 
 class Announcement(Base):
@@ -51,10 +51,10 @@ class Announcement(Base):
     title = Column(String)
     content = Column(String)
     type_id = Column(Integer, ForeignKey('announcementtype.id'))
-    type = relationship('AnnouncementType')
+    type = relationship('AnnouncementType', back_populates='announcements')
     owner_id = Column(Integer, ForeignKey('user.id'))
-    owner = relationship('User')
-    comments = relationship('Comment', cascade='all, delete')
+    owner = relationship('User', back_populates='announcements')
+    comments = relationship('Comment', back_populates='announcement', cascade='all, delete')
 
 
 class Comment(Base):
@@ -62,9 +62,9 @@ class Comment(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     text = Column(String)
     owner_id = Column(Integer, ForeignKey('user.id'), nullable=True)
-    owner = relationship('User')
+    owner = relationship('User', back_populates='comments')
     announcement_id = Column(Integer, ForeignKey('announcement.id'))
-    announcement = relationship('Announcement')
+    announcement = relationship('Announcement', back_populates='comments')
 
 
 # async def get_session():

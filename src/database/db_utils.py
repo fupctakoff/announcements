@@ -4,13 +4,13 @@ from fastapi import Depends
 from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from database.models import Base, User
+from src.database.models import Base, User
 from src.config import DB_HOST, DB_NAME, DB_PASSWORD, DB_USER
 
 
 DATABASE_URL = f'postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}'
 
-engine = create_async_engine(url=DATABASE_URL, echo=True)
+engine = create_async_engine(url=DATABASE_URL)
 
 async_session = sessionmaker(
     engine, expire_on_commit=False, class_=AsyncSession)
@@ -22,7 +22,7 @@ async def creating_tables():
         await connection.run_sync(Base.metadata.create_all)
 
 
-async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+async def get_async_session() -> AsyncSession: #-> AsyncGenerator[AsyncSession, None]:
     async with async_session() as session:
         yield session
 
