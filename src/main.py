@@ -3,6 +3,7 @@ from fastapi_users import FastAPIUsers
 from src.announcements_app.shemas import AnnouncementCreate, AnnouncementSchema
 from src.users_app.routers import app as users_router
 from src.announcements_app.routers import app as announcements_router
+from src.comments_app.routers import app as comments_router
 from src.announcements_app.repository import AnnouncementRepository
 from src.database.models import User
 from src.users_app.user_manager import get_user_manager
@@ -14,3 +15,4 @@ app = FastAPI()
 app.include_router(users_router)
 app.include_router(announcements_router, prefix='/announcement',
                    tags=['working with announcements'])
+app.include_router(comments_router, prefix='/comment', tags=['comments block'])
