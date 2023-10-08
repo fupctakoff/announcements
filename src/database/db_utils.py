@@ -22,7 +22,7 @@ async def creating_tables():
         await connection.run_sync(Base.metadata.create_all)
 
 
-async def get_async_session() -> AsyncSession: #-> AsyncGenerator[AsyncSession, None]:
+async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session() as session:
         yield session
 
