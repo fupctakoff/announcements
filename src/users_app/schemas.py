@@ -1,5 +1,5 @@
 from fastapi_users.schemas import BaseUser, BaseUserUpdate, CreateUpdateDictModel
-from pydantic import BaseModel, EmailStr
+from pydantic import EmailStr
 
 
 class UserRead(BaseUser[int]):

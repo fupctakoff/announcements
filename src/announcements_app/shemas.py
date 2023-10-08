@@ -1,4 +1,3 @@
-from typing import List
 from pydantic import BaseModel, ConfigDict
 
 
@@ -10,9 +9,8 @@ class AnnouncementSchema(BaseModel):
 
 
 class AnnouncementResponseDetail(AnnouncementSchema):
-    #comments here
     content: str
-    pass
+    #comments here
 
 class AnnouncementCreate(BaseModel):
     title: str
