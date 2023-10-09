@@ -1,4 +1,3 @@
-import asyncio
 from typing import AsyncGenerator
 from fastapi import Depends
 from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
@@ -8,6 +7,7 @@ from src.database.models import Base, User
 from src.config import DB_HOST, DB_NAME, DB_PASSWORD, DB_USER
 
 
+#DATABASE_URL = f'postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@localhost/{DB_NAME}'
 DATABASE_URL = f'postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}'
 
 engine = create_async_engine(url=DATABASE_URL)
@@ -29,6 +29,3 @@ async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
 
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
     yield SQLAlchemyUserDatabase(session, User)
-
-
-# asyncio.run(get_session())

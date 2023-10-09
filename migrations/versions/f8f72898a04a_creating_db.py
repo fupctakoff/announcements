@@ -1,8 +1,8 @@
-"""Creating db tables
+"""creating db
 
-Revision ID: acb6bd998a93
+Revision ID: f8f72898a04a
 Revises: 
-Create Date: 2023-10-09 04:25:10.386093
+Create Date: 2023-10-10 00:51:20.547920
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'acb6bd998a93'
+revision: str = 'f8f72898a04a'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -39,7 +39,7 @@ def upgrade() -> None:
     sa.Column('is_active', sa.Boolean(), nullable=False),
     sa.Column('is_superuser', sa.Boolean(), nullable=False),
     sa.Column('is_verified', sa.Boolean(), nullable=False),
-    sa.ForeignKeyConstraint(['role_id'], ['role.id'], ),
+    sa.ForeignKeyConstraint(['role_id'], ['role.id'], ondelete='SET NULL'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('announcement',
@@ -48,8 +48,8 @@ def upgrade() -> None:
     sa.Column('content', sa.String(), nullable=True),
     sa.Column('type_id', sa.Integer(), nullable=True),
     sa.Column('owner_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['owner_id'], ['user.id'], ),
-    sa.ForeignKeyConstraint(['type_id'], ['announcementtype.id'], ),
+    sa.ForeignKeyConstraint(['owner_id'], ['user.id'], ondelete='SET NULL'),
+    sa.ForeignKeyConstraint(['type_id'], ['announcementtype.id'], ondelete='SET NULL'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('comment',
@@ -57,8 +57,8 @@ def upgrade() -> None:
     sa.Column('text', sa.String(), nullable=True),
     sa.Column('owner_id', sa.Integer(), nullable=True),
     sa.Column('announcement_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['announcement_id'], ['announcement.id'], ),
-    sa.ForeignKeyConstraint(['owner_id'], ['user.id'], ),
+    sa.ForeignKeyConstraint(['announcement_id'], ['announcement.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['owner_id'], ['user.id'], ondelete='SET NULL'),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###

@@ -52,8 +52,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         user_dict["is_active"] = True
         user_dict["is_superuser"] = False
         user_dict["is_verified"] = False
-        # присвоение статуса user новому пользователю
-        user_dict["role_id"] = 1
+        user_dict["role_id"] = None
 
         created_user = await self.user_db.create(user_dict)
 

@@ -1,10 +1,6 @@
 from fastapi import Depends, APIRouter
 from fastapi.responses import JSONResponse
 from fastapi_users import FastAPIUsers
-from src.announcements_app.shemas import AnnouncementCreate, AnnouncementSchema
-from src.users_app.routers import app as users_router
-from src.announcements_app.routers import app as announcements_router
-from src.announcements_app.repository import AnnouncementRepository
 from src.database.models import User
 from src.users_app.user_manager import get_user_manager
 from src.users_app.authentication_backend import auth_backend
