@@ -1,14 +1,11 @@
 from typing import Optional, Union
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin, InvalidPasswordException
-from sqlalchemy import select
-from src.database.models import Role, User
+from src.database.models import User
 from src.database.db_utils import get_user_db
 from src.users_app.schemas import UserCreate
+from src.config import USERMANAGER_SECRET
 from fastapi_users import exceptions, models, schemas
-
-
-USERMANAGER_SECRET = "SECRET"
 
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):

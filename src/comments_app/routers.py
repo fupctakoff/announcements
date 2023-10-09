@@ -37,6 +37,6 @@ async def delete_comment(
     return await response.delete_comment(id, user)
 
 
-@app.get('/listtt')
+@app.get('/list_comments')
 async def get_list_comments(announcement_id: int, response: CommentRepository = Depends()):
     return await response.get_list_comments(announcement_id)

@@ -3,14 +3,12 @@ import asyncio
 from typing import List
 from fastapi import Depends
 from fastapi.responses import JSONResponse
-from sqlalchemy import delete, insert, select
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import Bundle
 from src.comments_app.shemas import CommentBase
 from src.database.models import Announcement, Comment, User
 from src.database.validation_including import validation
 from src.database.db_utils import get_async_session
-from src.users_app.repository import RoleRepository
 
 
 class CommentRepository:

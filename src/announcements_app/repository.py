@@ -1,11 +1,9 @@
 import asyncio
 from typing import List
 from fastapi.responses import JSONResponse
-from sqlalchemy import delete, insert, select
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import Depends
-from src.comments_app.shemas import CommentBase
-from src.comments_app.repository import CommentRepository
 from src.announcements_app.shemas import AnnouncementCreate, AnnouncementResponseDetail, AnnouncementSchema
 from src.database.models import Announcement, AnnouncementType, User
 from src.database.validation_including import validation

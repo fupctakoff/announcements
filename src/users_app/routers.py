@@ -33,3 +33,11 @@ async def appointment_as_administrator(
     response: RoleRepository = Depends()
 ) -> JSONResponse:
     return await response.give_administrator_rights(user_id, admin)
+
+
+@app.post("/create_role", tags=["users"], status_code=201)
+async def create_role(
+    name: str,
+    response: RoleRepository = Depends()
+) -> JSONResponse:
+    return await response.create_role(name)

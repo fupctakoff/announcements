@@ -1,14 +1,8 @@
-from fastapi import Depends, FastAPI
-from fastapi_users import FastAPIUsers
-from src.announcements_app.shemas import AnnouncementCreate, AnnouncementSchema
+from fastapi import FastAPI
 from src.users_app.routers import app as users_router
 from src.announcements_app.routers import app as announcements_router
 from src.comments_app.routers import app as comments_router
-from src.announcements_app.repository import AnnouncementRepository
-from src.database.models import User
-from src.users_app.user_manager import get_user_manager
-from src.users_app.authentication_backend import auth_backend
-from src.users_app.repository import RoleRepository
+
 
 app = FastAPI()
 
