@@ -28,13 +28,14 @@ class CommentRepository:
         await self.session.commit()
         return JSONResponse({'detail': True}, status_code=201)
 
-    async def delete_comment(self, id: int, user: User, is_admin: RoleRepository = Depends()):
+    async def delete_comment(self, id: int, user: User) -> JSONResponse:
         completed_validation = await asyncio.create_task(validation(id, Comment, self.session))
         if completed_validation:
             return completed_validation
         data = await self.session.execute(select(Comment).where(Comment.id == id))
         obj = data.scalars().one()
-        if user.id == obj.owner_id or await is_admin._is_admin(user):
+        # todo
+        if user.id == obj.owner_id or await user.role_id == 2:
             await self.session.execute(delete(Comment).where(Comment.id == id))
             await self.session.commit()
             return JSONResponse({'message': f'Комментарий {obj.text} успешно удален.'}, status_code=200)

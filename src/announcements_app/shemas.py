@@ -10,7 +10,9 @@ class AnnouncementSchema(BaseModel):
 
 class AnnouncementResponseDetail(AnnouncementSchema):
     content: str
-    #comments here
+    # todo
+    # comments: dict
+
 
 class AnnouncementCreate(BaseModel):
     title: str

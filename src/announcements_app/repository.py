@@ -4,10 +4,13 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import delete, insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import Depends
+from src.comments_app.shemas import CommentBase
+from src.comments_app.repository import CommentRepository
 from src.announcements_app.shemas import AnnouncementCreate, AnnouncementResponseDetail, AnnouncementSchema
 from src.database.models import Announcement, AnnouncementType, User
 from src.database.validation_including import validation
 from src.database.db_utils import get_async_session
+from src.users_app.repository import RoleRepository
 
 
 class AnnouncementRepository:
@@ -26,7 +29,11 @@ class AnnouncementRepository:
         data = result.scalars().all()
         return [AnnouncementSchema(title=row.title, type_id=row.type_id, owner_id=row.owner_id) for row in data]
 
-    async def get_announcement_detail(self, id: int) -> AnnouncementResponseDetail:
+    # todo
+    async def get_announcement_detail(
+        self,
+        id: int
+    ) -> AnnouncementResponseDetail:
         completed_validation = await asyncio.create_task(validation(id, Announcement, self.session))
         if completed_validation:
             return completed_validation
@@ -41,12 +48,13 @@ class AnnouncementRepository:
         await self.session.commit()
         return JSONResponse({'detail': True}, status_code=200)
 
-    async def delete_announcement(self, id: int, user: User) -> JSONResponse:
+    async def delete_announcement(self, id: int, user: User, is_admin: RoleRepository = Depends()) -> JSONResponse:
         completed_validation = await asyncio.create_task(validation(id, Announcement, self.session))
         if completed_validation:
             return completed_validation
         data = await self.session.execute(select(Announcement).where(Announcement.id == id))
         obj = data.scalars().one()
+        # todo
         if user.id == obj.owner_id or user.role_id == 2:
             await self.session.execute(delete(Announcement).where(Announcement.id == id))
             await self.session.commit()
