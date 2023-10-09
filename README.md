@@ -1,7 +1,7 @@
 # Demo-API проекта объявлений
 # О проекте
 <br>
-Стек: Python, FastAPI,  PostgreSQL, SQLAlchemy, Pydantic, Alembic, Docker
+Стек: Python, FastAPI,  PostgreSQL, SQLAlchemy, Pydantic, Alembic, Docker, fastapi-users
 
 # Установка
 <br>
