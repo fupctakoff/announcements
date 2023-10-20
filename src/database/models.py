@@ -2,7 +2,6 @@ from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import declarative_base, relationship
 
-
 Base = declarative_base()
 
 
@@ -60,3 +59,21 @@ class Comment(Base):
     announcement_id = Column(Integer, ForeignKey(
         'announcement.id', ondelete='CASCADE'))
     announcement = relationship('Announcement', back_populates='comments')
+
+
+class EventType(Base):
+    __tablename__ = 'eventtype'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String)
+    events = relationship('Event', back_populates='type', primaryjoin="EventType.id == Event.type_id")
+
+
+class Event(Base):
+    __tablename__ = 'event'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    title = Column(String)
+    content = Column(String)
+    dresscode = Column(String)
+    type_id = Column(Integer, ForeignKey(
+        'eventtype.id', ondelete='SET NULL'))
+    type = relationship('EventType', back_populates='events')
