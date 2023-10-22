@@ -3,13 +3,10 @@ from src.database.models import Event, EventType
 from sqlalchemy import select
 from src.database.db_utils import get_async_session
 
-full_event = QueryType()
+query = QueryType()
 
 
-# event_type = QueryType()
-# event = QueryType()
-
-@full_event.field("get_full_event")
+@query.field("get_full_event")
 async def resolve_get_full_event(_, info, id: int):
     awaitable_session = anext(get_async_session())
     session = await awaitable_session
@@ -28,3 +25,12 @@ async def resolve_get_full_event(_, info, id: int):
             'type': result[0][4],
         }
     return result
+
+
+@query.field("get_event")
+async def resolve_get_event(_, info, id: int):
+    return id
+
+@query.field("get_event_type")
+async def resolve_get_event_type(_, info, id: int):
+    return id
